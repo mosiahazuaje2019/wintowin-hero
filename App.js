@@ -16,7 +16,7 @@ import DetailUserScreen from "./screens/User/DetailUserScreen"
 function MyStack(){
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Login" component={LoginScreen} options={{title:"Bienvenido"}} />
+      <Stack.Screen name="Login" component={LoginScreen} options={{title:"Login WintoWin Hero"}} />
       <Stack.Screen name="ListUsers" component={ListUsers} options={{title:"Lista de usuarios"}} />
       <Stack.Screen name="CreateUserScreen" component={CreateUserScreen} options={{title:"Crear usuarios"}} />
       <Stack.Screen name="DetailUserScreen" component={DetailUserScreen} options={{title:"Detalle de usuarios"}} />

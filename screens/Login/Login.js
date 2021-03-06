@@ -53,9 +53,8 @@ export default function PhoneAuthScreen(props) {
           ref={recaptchaVerifier}
           firebaseConfig={FIREBASE_CONFIG}
         />
-        <Text style={styles.title}>Firebase Phone Auth</Text>
-        <Text style={styles.subtitle}>using expo-firebase-recaptcha</Text>
-        <Text style={styles.text}>Enter phone number</Text>
+        <Text style={styles.title}>Inicio de sesión</Text>
+        <Text style={styles.text}>Ingresa tu número de telefono</Text>
         <TextInput
           style={styles.textInput}
           autoFocus={isConfigValid}
@@ -92,11 +91,11 @@ export default function PhoneAuthScreen(props) {
         {verifyError && <Text style={styles.error}>{`Error: ${verifyError.message}`}</Text>}
         {verifyInProgress && <ActivityIndicator style={styles.loader} />}
         {verificationId ? (
-          <Text style={styles.success}>A verification code has been sent to your phone</Text>
+          <Text style={styles.success}>Se a enviado un código de verificación al teléfono suministrado</Text>
         ) : (
           undefined
         )}
-        <Text style={styles.text}>Enter verification code</Text>
+        <Text style={styles.text}>Ingrese PIN</Text>
         <TextInput
           ref={verificationCodeTextInput}
           style={styles.textInput}

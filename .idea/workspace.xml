@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4dbd53b6-e011-4018-b01a-298fd424c63f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/firebase.js" beforeDir="false" afterPath="$PROJECT_DIR$/database/firebase.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Login/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Login/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/User/CreateUserScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/User/CreateUserScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/User/DetailUserScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/User/DetailUserScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/User/ListUsers.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/User/ListUsers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.expo/packager-info.json" beforeDir="false" afterPath="$PROJECT_DIR$/.expo/packager-info.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
