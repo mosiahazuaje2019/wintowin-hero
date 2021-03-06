@@ -3,6 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import firebase from './database/firebase';
 
 const Stack = createStackNavigator();
 
@@ -10,6 +11,7 @@ import LoginScreen  from "./screens/Login/Login";
 import ListUsers from "./screens/User/ListUsers"
 import CreateUserScreen from "./screens/User/CreateUserScreen"
 import DetailUserScreen from "./screens/User/DetailUserScreen"
+
 
 function MyStack(){
   return (

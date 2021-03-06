@@ -19,5 +19,6 @@ var firebaseConfig = {
   export default {
       firebase,
       db,
+      firebaseConfig,
       recap
   }

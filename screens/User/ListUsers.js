@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Button, ScrollView } from "react-native";
+import { View, Image, Button, ScrollView, StyleSheet } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 import firebase from "../../database/firebase";
 
@@ -26,6 +26,10 @@ const ListUsers = (props) => {
 
     return (
         <ScrollView>
+            {/* <View style={styles.container} >
+                <Image source={{ uri: "http://159.203.82.152/assets/img/logo-white.png" }} style={{ width: 255, height: 100 }} />
+            </View> */}
+            
             <Button title="Crear usuario" onPress={() => props.navigation.navigate('CreateUserScreen')} />
             {
                 users.map(user => {
@@ -34,7 +38,7 @@ const ListUsers = (props) => {
                             key={user.id}
                             bottomDivider
                             onPress={() => props.navigation.navigate('DetailUserScreen',{
-                                userId: user.id
+                                phone
                             })}
                         >
                             <ListItem.Chevron />
@@ -55,5 +59,15 @@ const ListUsers = (props) => {
         </ScrollView>
     )
 }
+
+const styles = StyleSheet.create({
+    container:{
+        flex:1,
+        padding:5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#198fd5'
+    },
+})
 
 export default ListUsers
