@@ -6,8 +6,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import firebase from './database/firebase';
 import LoginScreen from "./screens/Login/Login";
 import ListUsers from "./screens/User/ListUsers"
-import CreateUserScreen from "./screens/User/CreateUserScreen"
+import CreateTravelScreen from "./screens/Travel/CreateTravelScreen"
 import DetailUserScreen from "./screens/User/DetailUserScreen"
+import ListVehicles from "./screens/Vehicles/ListVehicles"
+import ListWallet from "./screens/Wallet/ListWallet"
 
 const Drawer = createDrawerNavigator();
 
@@ -29,7 +31,9 @@ function MyStack() {
     return (
       <Drawer.Navigator>
         <Drawer.Screen name="ListUsers" component={ListUsers} options={{ title: "Mis viajes" }} />
-        <Drawer.Screen name="CreateUserScreen" component={CreateUserScreen} options={{ title: "Crear viaje" }} />
+        <Drawer.Screen name="CreateTravelScreen" component={CreateTravelScreen} options={{ title: "Crear viaje" }} />
+        <Drawer.Screen name="ListVehicles" component={ListVehicles} options={{ title: "Mis Vehiculos" }} />
+        <Drawer.Screen name="ListWallet" component={ListWallet} options={{ title: "Wallet" }} />
         <Drawer.Screen name="DetailUserScreen" component={DetailUserScreen} options={{ title: "Mi perfil" }} />
       </Drawer.Navigator>
     )

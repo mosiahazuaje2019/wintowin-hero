@@ -171,6 +171,9 @@ const DetailUserScreen = (props) => {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.logoTop} >
+            <Image source={{ uri: "http://159.203.82.152/assets/img/logo-white.png" }} style={{ width: 200, height: 80 }} />
+        </View>         
         <View>
           <Text style={styles.title}>Datos básicos del usuario</Text>
         </View>
@@ -313,6 +316,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 35,
+    backgroundColor: '#ffffff',
+  },
+  logoTop: {
+    flex:1,
+    padding:0,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   inputGroup: {
     flex: 1,
@@ -336,13 +346,13 @@ const styles = StyleSheet.create({
     width: 120,
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 16,
     color: "#fff",
     textAlign: "center",
   },
   buttonIcons: {
-    fontSize: 32,
     color: "black",
+    fontSize: 40,
     textAlign: "center",
   },
   buttonUpdate: {

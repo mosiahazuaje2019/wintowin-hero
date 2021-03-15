@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Button, TextInput, ScrollView, StyleSheet } from "react-native";
+import { View, Button, TextInput, ScrollView, StyleSheet, Image } from "react-native";
 import  firebase  from "../../database/firebase";
 
 const CreateUserScreen = (props) => {
@@ -27,7 +27,10 @@ const CreateUserScreen = (props) => {
         }
     }
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView>
+            <View style={styles.logoTop} >
+                <Image source={{ uri: "http://159.203.82.152/assets/img/logo-white.png" }} style={{ width: 200, height: 80 }} />
+            </View>            
             <View style={styles.inputGroup}>
                 <TextInput 
                     placeholder="Nombre de usuario"
@@ -65,6 +68,13 @@ const styles = StyleSheet.create({
         marginBottom:15,
         borderBottomWidth: 1,
         borderBottomColor: '#cccccc'
+    },
+    logoTop:{
+        flex:1,
+        padding:5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#198fd5'
     }
 })
 
