@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Image, Button, ScrollView, StyleSheet } from "react-native";
+import { Text, Image, Button, ScrollView, StyleSheet } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 import firebase from "../../database/firebase";
 
@@ -30,7 +30,7 @@ const ListUsers = (props) => {
                 <Image source={{ uri: "http://159.203.82.152/assets/img/logo-white.png" }} style={{ width: 255, height: 100 }} />
             </View> */}
             
-            <Button title="Crear usuario" onPress={() => props.navigation.navigate('CreateUserScreen')} />
+            <Text>Mis viajes</Text>  
             {
                 users.map(user => {
                     return (

@@ -25,16 +25,6 @@ const FIREBASE_CONFIG = {
 
 export default function PhoneAuthScreen(props) {
 
-  firebase.auth().onAuthStateChanged((user) => {
-    if(user) {
-      props.navigation.navigate('DetailUserScreen',{
-        user_auth: user.uid
-      });
-      } else {
-      console.log('User not logged in')
-    }
-  })
-
   const recaptchaVerifier = React.useRef(null);
   const verificationCodeTextInput = React.useRef(null);
   const [phoneNumber, setPhoneNumber] = React.useState('');

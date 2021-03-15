@@ -20,22 +20,42 @@ import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+const initialState = {
+  id: "",
+  name: "",
+  email: "",
+  phone: "",
+  user_auth: "",
+  type_document: "",
+  document: "",
+  dateend_license: new Date(),
+};
+
 const DetailUserScreen = (props) => {
-  //* Image Vars */
   const [selectedImage, setSelectedImage] = React.useState(null);
+  const [user, setUser] = useState(initialState);
+  const [showCalendar, setShowCalendar] = useState(false);
+
+  useEffect(() => {
+    firebase.firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        getUserById(user.uid);
+      }
+    })
+  }, []);
 
   const storage = firebase.firebase.storage().ref();
   const ref_cedula = storage.child(
-    props.route.params.user_auth +
-      "/documento_identidad/documento_identidad_" +
-      props.route.params.user_auth +
-      ".jpg"
+    user.uid +
+    "/documento_identidad/documento_identidad_" +
+    user.uid +
+    ".jpg"
   );
   const ref_licencia = storage.child(
-    props.route.params.user_auth +
-      "/licencia/licencia_" +
-      props.route.params.user_auth +
-      ".jpg"
+    user.uid +
+    "/licencia/licencia_" +
+    user.uid +
+    ".jpg"
   );
 
   const openImagePickerAsync = async (type_upload) => {
@@ -48,23 +68,21 @@ const DetailUserScreen = (props) => {
 
     const pickerResult = await ImagePicker.launchImageLibraryAsync();
 
-    console.log(pickerResult);
-
     switch (type_upload) {
       case "ref_cedula":
         uploadImage(
           pickerResult.uri,
-          props.route.params.user_auth +
-            "/documento_identidad/documento_identidad_" +
-            props.route.params.user_auth +
-            ".jpg"
+          user.uid +
+          "/documento_identidad/documento_identidad_" +
+          user.uid +
+          ".jpg"
         );
         break;
       case "ref_licencia":
-          uploadImage(pickerResult.uri,     props.route.params.user_auth +
-            "/licencia/licencia_" +
-            props.route.params.user_auth +
-            ".jpg")
+        uploadImage(pickerResult.uri, user.uid +
+          "/licencia/licencia_" +
+          user.uid +
+          ".jpg")
       default:
         console.log("No esta pasando el parametro adecuado");
         break;
@@ -84,20 +102,6 @@ const DetailUserScreen = (props) => {
     return ref.put(blob);
   };
 
-  const initialState = {
-    id: "",
-    name: "",
-    email: "",
-    phone: "",
-    user_auth: "",
-    type_document: "",
-    document: "",
-    dateend_license: new Date(),
-  };
-
-  const [user, setUser] = useState(initialState);
-  const [showCalendar, setShowCalendar] = useState(false);
-
   const getUserById = async (user_auth) => {
     const dbRef = firebase.db.collection("users").doc(user_auth);
     const doc = await dbRef.get();
@@ -108,10 +112,6 @@ const DetailUserScreen = (props) => {
       user_auth,
     });
   };
-
-  useEffect(() => {
-    getUserById(props.route.params.user_auth);
-  }, []);
 
   const handleChangeText = (name, value) => {
     if (name === "dateend_license") {
@@ -128,7 +128,7 @@ const DetailUserScreen = (props) => {
   const deleteUser = async () => {
     const dbRef = firebase.db
       .collection("users")
-      .doc(props.route.params.user_auth);
+      .doc(user.uid);
     await dbRef.delete();
     props.navigation.navigate("ListUsers");
   };
@@ -143,7 +143,7 @@ const DetailUserScreen = (props) => {
   const updateUser = async () => {
     const dbRef = firebase.db
       .collection("users")
-      .doc(props.route.params.user_auth);
+      .doc(user.uid);
     await dbRef.set({
       name: user.name,
       email: user.email,
