@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text, Image, Button, ScrollView, StyleSheet } from "react-native";
+import { Text, Image, View, ScrollView, StyleSheet } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 import firebase from "../../database/firebase";
 
@@ -26,11 +26,11 @@ const ListUsers = (props) => {
 
     return (
         <ScrollView>
-            {/* <View style={styles.container} >
-                <Image source={{ uri: "http://159.203.82.152/assets/img/logo-white.png" }} style={{ width: 255, height: 100 }} />
-            </View> */}
+            <View style={styles.container} >
+                <Image source={{ uri: "http://159.203.82.152/assets/img/logo-white.png" }} style={{ width: 200, height: 80 }} />
+            </View> 
             
-            <Text>Mis viajes</Text>  
+            <Text style={styles.title}>Mis viajes</Text>  
             {
                 users.map(user => {
                     return (
@@ -68,6 +68,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#198fd5'
     },
+    title:{
+        fontSize: 24,
+        fontWeight:'bold',
+        textAlign:'center',
+    }
 })
 
 export default ListUsers
