@@ -30,7 +30,7 @@ function MyStack() {
   if (user)
     return (
       <Drawer.Navigator>
-        <Drawer.Screen name="ListUsers" component={ListUsers} options={{ title: "Mis viajes" }} />
+        {/* <Drawer.Screen name="ListUsers" c}omponent={ListUsers} options={{ title: "Mis viajes" }} />  */}
         <Drawer.Screen name="CreateTravelScreen" component={CreateTravelScreen} options={{ title: "Crear viaje" }} />
         <Drawer.Screen name="ListVehicles" component={ListVehicles} options={{ title: "Mis Vehiculos" }} />
         <Drawer.Screen name="ListWallet" component={ListWallet} options={{ title: "Wallet" }} />

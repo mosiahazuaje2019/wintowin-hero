@@ -3,12 +3,12 @@ import "firebase/firestore";
 
 
 var firebaseConfig = {
-    apiKey: "AIzaSyDCosAACiucE0-BuG-jxoqYa5kdmP7Db1U",
-    authDomain: "wintowin-admin.firebaseapp.com",
-    projectId: "wintowin-admin",
-    storageBucket: "wintowin-admin.appspot.com",
-    messagingSenderId: "201645717063",
-    appId: "1:201645717063:web:8cb8aa978af80626e32362"
+    apiKey: "AIzaSyCz5szAqKD8Fb4UKj07dkgx1kdX5AU4hPc",
+    authDomain: "wintowin-34f5b.firebaseapp.com",
+    projectId: "wintowin-34f5b",
+    storageBucket: "wintowin-34f5b.appspot.com",
+    messagingSenderId: "513868192713",
+    appId: "1:513868192713:web:4238738534760a09632618"
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
