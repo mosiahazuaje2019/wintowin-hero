@@ -15,13 +15,13 @@ import firebase from "../../database/firebase";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import MapViewDirections from "react-native-maps-directions";
 
-const CreateTravelScreen = () => {
+const CreateTravelScreen = ({ navigation }) => {
   function regionFrom(lat, lon, accuracy) {
     const oneDegreeOfLongitudeInMeters = 111.32 * 1000;
     const circumference = (40075 / 360) * 1000;
 
-    const latDelta = accuracy * (1 / (Math.cos(lat) * circumference));
-    const lonDelta = accuracy / oneDegreeOfLongitudeInMeters;
+    //const latDelta = accuracy * (1 / (Math.cos(lat) * circumference));
+    //const lonDelta = accuracy / oneDegreeOfLongitudeInMeters;
 
     return {
       latitude: lat,
@@ -30,7 +30,6 @@ const CreateTravelScreen = () => {
       longitudeDelta: 0.005,
     };
   }
-
   async function insertNewOriginAdress({ lat, lng }) {
     setLocation(regionFrom(lat, lng, 0));
   }
@@ -46,10 +45,22 @@ const CreateTravelScreen = () => {
     outTime: "",
     user_id: "",
   });
+
   const [location, setLocation] = useState(null);
   const [destinyLocation, setDestinyLocation] = useState(null);
   const [currentAdress, setCurrentAdress] = useState(null);
   const ref = useRef();
+
+  useEffect(() => {
+    firebase.firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        setState({
+          ...state,
+          user_id: user.uid,
+        });
+      }
+    });
+  }, []);
 
   useEffect(() => {
     ref.current?.animateToRegion({
@@ -93,14 +104,25 @@ const CreateTravelScreen = () => {
 
   const addTravel = async () => {
     try {
-      await firebase.db.collection("travels").add({
-        start_point: state.start_point,
-        ended_point: state.ended_point,
+      firebase.db.collection("travels").add({
+        start_point: {
+          latitude: location.latitude,
+          longitude: location.longitude,
+        },
+        ended_point: {
+          latitude: destinyLocation.latitude,
+          longitude: destinyLocation.longitude,
+        },
         available_tickets: state.available_tickets,
         outTime: state.outTime,
         user_id: state.user_id,
-      });
-      //props.navigation.navigate('ListUsers');
+        created_at: new Date()
+      }).then((docRef) => {
+        navigation.navigate("DetailTravelScreen", {
+          id: docRef.id,
+        });
+      })
+
     } catch (error) {
       console.log("error al generar el registro");
     }
@@ -146,19 +168,21 @@ const CreateTravelScreen = () => {
                 title="Locacion de destino"
               />
             )}
-            {location && destinyLocation && <MapViewDirections
-              origin={{
-                latitude: location.latitude,
-                longitude: location.longitude,
-              }}
-              destination={{
-                latitude: destinyLocation.latitude,
-                longitude: destinyLocation.longitude,
-              }}
-              strokeWidth={3}
-              strokeColor="hotpink"
-              apikey={"AIzaSyDZLHUxrwOue8mkvqEil_bZmNG99KkXpaQ"}
-            /> }
+            {location && destinyLocation && (
+              <MapViewDirections
+                origin={{
+                  latitude: location.latitude,
+                  longitude: location.longitude,
+                }}
+                destination={{
+                  latitude: destinyLocation.latitude,
+                  longitude: destinyLocation.longitude,
+                }}
+                strokeWidth={3}
+                strokeColor="hotpink"
+                apikey={"AIzaSyDZLHUxrwOue8mkvqEil_bZmNG99KkXpaQ"}
+              />
+            )}
           </MapView>
         )}
         <View style={styles.inputGroup}>
@@ -205,7 +229,7 @@ const CreateTravelScreen = () => {
         </View>
         <View style={styles.inputGroup}>
           <TextInput
-            placeholder="Cupos disponiblea"
+            placeholder="Cupos disponibles"
             onChangeText={(value) =>
               handleChangeText("available_tickets", value)
             }
@@ -252,7 +276,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: 300,
-    height: 550,
+    height: 450,
   },
 });
 
