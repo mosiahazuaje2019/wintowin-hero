@@ -83,7 +83,7 @@ const CreateTravelScreen = ({ navigation }) => {
         return;
       }
 
-      let userLocation = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.High});
+      let userLocation = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.BestForNavigation});
       const latitudeX = userLocation.coords.latitude;
       const longitudeY = userLocation.coords.longitude;
       const accuracy = userLocation.coords.accuracy;
