@@ -19,6 +19,7 @@ import moment from "moment";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {Header, Icon} from "react-native-elements";
 
 const initialState = {
   id: "",
@@ -169,14 +170,13 @@ const DetailUserScreen = (props) => {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.logoTop} >
-            <Image source={{ uri: "http://159.203.82.152/assets/img/logo-white.png" }} style={{ width: 200, height: 80 }} />
-        </View>         
-        <View>
-          <Text style={styles.title}>Datos básicos del usuario</Text>
-        </View>
+      <ScrollView>
+        <Header
+            placement="left"
+            leftComponent={<Icon name='menu' onPress={() => props.navigation.toggleDrawer() }/>}
+            centerComponent={{ text: 'MI PERFIL', style: { color: '#fff' } }}
+            rightComponent={<Image source={{ uri: "http://159.203.82.152/assets/img/logo-white.png" }} style={{ width: 100, height: 40 }} />}
+        />
         <View style={styles.inputGroup}>
           <TextInput
             value={user.name}
@@ -308,7 +308,6 @@ const DetailUserScreen = (props) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
-    </View>
   );
 };
 
@@ -327,9 +326,12 @@ const styles = StyleSheet.create({
   inputGroup: {
     flex: 1,
     padding: 0,
-    marginBottom: 15,
+    marginBottom: 5,
+    marginTop: 15,
     borderBottomWidth: 1,
     borderBottomColor: "#cccccc",
+    paddingRight: 10,
+    paddingLeft:10
   },
   title: {
     flex: 1,
@@ -381,6 +383,7 @@ const styles = StyleSheet.create({
   fixToText: {
     flexDirection: "row",
     justifyContent: "space-between",
+    marginBottom:20
   },
   buttonIconsUpdate: {
     color: "white",

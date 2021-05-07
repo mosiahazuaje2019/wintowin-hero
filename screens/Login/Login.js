@@ -57,7 +57,7 @@ export default function PhoneAuthScreen(props) {
           onChangeText={(phoneNumber) => setPhoneNumber(phoneNumber)}
         />
         <Button
-          title={`${verificationId ? 'Resend' : 'Send'} Verification Code`}
+          title={`${verificationId ? 'Reenviar' : 'Enviar'} Código de verificación`}
           disabled={!phoneNumber}
           onPress={async () => {
             const phoneProvider = new firebase.auth.PhoneAuthProvider();
@@ -95,7 +95,7 @@ export default function PhoneAuthScreen(props) {
           onChangeText={(verificationCode) => setVerificationCode(verificationCode)}
         />
         <Button
-          title="Confirm Verification Code"
+          title="Confirmar código de verificación"
           disabled={!verificationCode}
           onPress={async () => {
             try {
@@ -110,7 +110,7 @@ export default function PhoneAuthScreen(props) {
               setVerificationId('');
               setVerificationCode('');
               verificationCodeTextInput.current?.clear();
-              Alert.alert('Phone authentication successful!');
+              Alert.alert('Autenticación exitosa!');
             } catch (err) {
               setConfirmError(err);
               setConfirmInProgress(false);
@@ -129,6 +129,8 @@ export default function PhoneAuthScreen(props) {
       )}
     </View>
   );
+
+
 }
 
 const styles = StyleSheet.create({

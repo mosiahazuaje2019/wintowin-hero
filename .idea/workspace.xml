@@ -3,11 +3,25 @@
   <component name="ChangeListManager">
     <list default="true" id="4dbd53b6-e011-4018-b01a-298fd424c63f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.expo/packager-info.json" beforeDir="false" afterPath="$PROJECT_DIR$/.expo/packager-info.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Login/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Login/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Travel/ListTravelScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Travel/ListTravelScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/User/DetailUserScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/User/DetailUserScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Wallet/ListWallet.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Wallet/ListWallet.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -20,8 +34,12 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -32,13 +50,14 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1614714469216</updated>
+      <workItem from="1619439739505" duration="2247000" />
+      <workItem from="1619475336502" duration="1510000" />
+      <workItem from="1619478592080" duration="2144000" />
+      <workItem from="1619554627345" duration="7666000" />
     </task>
     <servers />
   </component>
-  <component name="WindowStateProjectService">
-    <state x="418" y="198" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1614714553027">
-      <screen x="0" y="27" width="1920" height="1053" />
-    </state>
-    <state x="418" y="198" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1080/0.27.1920.1053@0.27.1920.1053" timestamp="1614714553027" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>
