@@ -1,20 +1,33 @@
-import React from "react";
+import React, { useRef } from "react";
+import { TouchableOpacity, StyleSheet, Text } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
-const GooglePlacesInput = () => {
+const GooglePlacesInput = (props) => {
+  const ref = useRef();
   return (
     <GooglePlacesAutocomplete
+      ref={ref}
       placeholder="Buscar lugar de origen"
-      placeholder="Your address"
-      minLength={1}
-      autoFocus={false}
-      returnKeyType={"default"}
-      keyboardAppearance={"light"}
-      listViewDisplayed={false}
+      currentLocation={true}
+      currentLocationLabel="Lugares cercanos"
+      minLength={3}
+      renderRightButton={() => {
+        return (
+          <TouchableOpacity
+          style={styles.button}
+          onPress={() => ref.current?.clear()}
+        >
+          <Text>X</Text>
+        </TouchableOpacity>
+        )
+      }}
+      debounce={300}
       fetchDetails={true}
-      onPress={(data, details = null) => {
-        // 'details' is provided when fetchDetails = true
-        console.log(data);
+      onPress={(_data, details = null) => {
+        props.destinyFunc({
+          latitude: details.geometry.location.lat,
+          longitude: details.geometry.location.lng,
+        });
       }}
       query={{
         key: "AIzaSyDZLHUxrwOue8mkvqEil_bZmNG99KkXpaQ",
@@ -24,5 +37,14 @@ const GooglePlacesInput = () => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  button: {
+    alignItems: "center",
+    backgroundColor: "#0096FF",
+    padding: 10,
+    height: 45
+  }
+});
 
 export default GooglePlacesInput;

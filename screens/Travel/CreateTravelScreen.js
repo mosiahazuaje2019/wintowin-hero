@@ -1,74 +1,57 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  View,
-  Button,
-  TextInput,
-  ScrollView,
-  StyleSheet,
-  Image,
-  Text,
-  Dimensions,
-} from "react-native";
+import { StyleSheet, View, TextInput } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
-import firebase from "../../database/firebase";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import MapViewDirections from "react-native-maps-directions";
+import GooglePlacesInput from "../../components/GooglePlacesInput";
 
 const CreateTravelScreen = ({ navigation }) => {
-  function regionFrom(lat, lon, accuracy) {
-    const oneDegreeOfLongitudeInMeters = 111.32 * 1000;
-    const circumference = (40075 / 360) * 1000;
+  const [location, setLocation] = useState({
+    latitude: 4.61059,
+    longitude: -74.11491,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
 
-    //const latDelta = accuracy * (1 / (Math.cos(lat) * circumference));
-    //const lonDelta = accuracy / oneDegreeOfLongitudeInMeters;
+  const [destinyLocation, setDestinyLocation] = useState(null);
+  const [_currentAdress, setCurrentAdress] = useState(null);
+  const ref = useRef();
 
+  function regionFrom(lat, lon, rotation = 0) {
     return {
       latitude: lat,
       longitude: lon,
-      latitudeDelta: 0.005,
-      longitudeDelta: 0.005,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+      rotation,
     };
   }
-  async function insertNewOriginAdress({ lat, lng }) {
-    setLocation(regionFrom(lat, lng, 0));
+
+  async function findUserLocation() {
+    const userLocation = await Location.getCurrentPositionAsync({
+      accuracy: Location.Accuracy.BestForNavigation,
+    });
+
+    const latitude = userLocation.coords.latitude;
+    const longitude = userLocation.coords.longitude;
+    const rotation = userLocation.coords.heading;
+    return setLocation(regionFrom(latitude, longitude, rotation));
   }
 
-  async function insertNewDestinyAdress({ lat, lng }) {
-    setDestinyLocation(regionFrom(lat, lng, 0));
+  async function insertNewOriginAdress({ latitude, longitude }) {
+    setLocation(regionFrom(latitude, longitude));
   }
 
-  const [state, setState] = useState({
-    start_point: "",
-    ended_point: "",
-    available_tickets: "",
-    outTime: "",
-    user_id: "",
-  });
-
-  const [location, setLocation] = useState(null);
-  const [destinyLocation, setDestinyLocation] = useState(null);
-  const [currentAdress, setCurrentAdress] = useState(null);
-  const ref = useRef();
+  async function insertNewDestinyAdress({ latitude, longitude }) {
+    setDestinyLocation(regionFrom(latitude, longitude));
+  }
 
   useEffect(() => {
-    firebase.firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setState({
-          ...state,
-          user_id: user.uid,
-        });
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    ref.current?.animateToRegion({
-      latitude: location.latitude,
-      longitude: location.longitude,
-      latitudeDelta: location.latitudeDelta,
-      longitudeDelta: location.longitudeDelta,
-    });
+    (async () => {
+      const address = await Location.reverseGeocodeAsync(location);
+      setCurrentAdress(address[0]);
+    })();
+    ref.current?.animateToRegion(location);
   }, [location]);
 
   useEffect(() => {
@@ -77,206 +60,81 @@ const CreateTravelScreen = ({ navigation }) => {
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestPermissionsAsync();
+      const { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-
-      let userLocation = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.BestForNavigation});
-      const latitudeX = userLocation.coords.latitude;
-      const longitudeY = userLocation.coords.longitude;
-      const accuracy = userLocation.coords.accuracy;
-      setLocation(regionFrom(latitudeX, longitudeY, accuracy));
+      await findUserLocation();
     })();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      const address = await Location.reverseGeocodeAsync(location);
-      setCurrentAdress(address[0]);
-    })();
-  }, [location]);
+  const interval = async () => {
+    await findUserLocation();
+  }
 
-  const handleChangeText = (name, value) => {
-    setState({ ...state, [name]: value });
-  };
-
-  const addTravel = async () => {
-    try {
-      firebase.db.collection("travels").add({
-        start_point: {
-          latitude: location.latitude,
-          longitude: location.longitude,
-        },
-        ended_point: {
-          latitude: destinyLocation.latitude,
-          longitude: destinyLocation.longitude,
-        },
-        available_tickets: state.available_tickets,
-        outTime: state.outTime,
-        user_id: state.user_id,
-        created_at: new Date()
-      }).then((docRef) => {
-        navigation.navigate("DetailTravelScreen", {
-          id: docRef.id,
-        });
-      })
-
-    } catch (error) {
-      console.log("error al generar el registro");
-    }
-  };
+  setTimeout(interval, 2000)
 
   return (
-    <ScrollView keyboardShouldPersistTaps="handled">
-      <View style={styles.logoTop}>
-        <Image
-          source={{ uri: "http://159.203.82.152/assets/img/logo-white.png" }}
-          style={{ width: 200, height: 80, marginTop: 20 }}
+    <>
+      <MapView style={styles.map} ref={ref} initialRegion={location}>
+        <Marker
+          identifier="origin"
+          draggable
+          pinColor="#0096FF"
+          rotation={location.rotation}
+          onDragEnd={(e) => insertNewOriginAdress(e.nativeEvent.coordinate)}
+          coordinate={location}
+          title="Ubicación actual"
         />
-      </View>
-      <View style={styles.container}>
-        <Text style={styles.title}>Creando viaje</Text>
-        {location && (
-          <MapView
-            style={styles.map}
-            ref={ref}
-            initialRegion={{
+
+        {destinyLocation && (
+          <Marker
+            identifier="destiny"
+            draggable
+            pinColor="#0096FF"
+            onDragEnd={(e) => insertNewDestinyAdress(e.nativeEvent.coordinate)}
+            coordinate={location}
+            title="Ubicación de destino"
+          />
+        )}
+        {location && destinyLocation && (
+          <MapViewDirections
+            origin={{
               latitude: location.latitude,
               longitude: location.longitude,
-              latitudeDelta: location.latitudeDelta,
-              longitudeDelta: location.longitudeDelta,
             }}
-          >
-            <Marker
-              identifier="origin"
-              coordinate={{
-                latitude: location.latitude,
-                longitude: location.longitude,
-              }}
-              title="Locacion actual"
-            />
-
-            {destinyLocation && (
-              <Marker
-                identifier="destiny"
-                coordinate={{
-                  latitude: destinyLocation.latitude,
-                  longitude: destinyLocation.longitude,
-                }}
-                title="Locacion de destino"
-              />
-            )}
-            {location && destinyLocation && (
-              <MapViewDirections
-                origin={{
-                  latitude: location.latitude,
-                  longitude: location.longitude,
-                }}
-                destination={{
-                  latitude: destinyLocation.latitude,
-                  longitude: destinyLocation.longitude,
-                }}
-                strokeWidth={3}
-                strokeColor="hotpink"
-                apikey={"AIzaSyDZLHUxrwOue8mkvqEil_bZmNG99KkXpaQ"}
-              />
-            )}
-          </MapView>
+            destination={{
+              latitude: destinyLocation.latitude,
+              longitude: destinyLocation.longitude,
+            }}
+            strokeWidth={3}
+            strokeColor="hotpink"
+            apikey={"AIzaSyDZLHUxrwOue8mkvqEil_bZmNG99KkXpaQ"}
+          />
         )}
-        <View style={styles.inputGroup}>
-          <GooglePlacesAutocomplete
-            placeholder="Buscar lugar de origen"
-            minLength={3}
-            autoFocus={false}
-            returnKeyType={"default"}
-            keyboardAppearance={"light"}
-            followUserLocation={true}
-            listViewDisplayed={"false"}
-            currentLocation={true}
-            currentLocationLabel={"Lugar actual"}
-            fetchDetails={true}
-            onPress={(data, details = null) => {
-              insertNewOriginAdress(details.geometry.location);
-            }}
-            query={{
-              key: "AIzaSyDZLHUxrwOue8mkvqEil_bZmNG99KkXpaQ",
-              language: "es",
-              components: "country:co",
-            }}
-          />
-        </View>
-        <View style={styles.inputGroup}>
-          <GooglePlacesAutocomplete
-            placeholder="Buscar lugar de destino"
-            minLength={3}
-            autoFocus={false}
-            returnKeyType={"default"}
-            keyboardAppearance={"light"}
-            followUserLocation={true}
-            listViewDisplayed={"false"}
-            fetchDetails={true}
-            onPress={(data, details = null) => {
-              insertNewDestinyAdress(details.geometry.location);
-            }}
-            query={{
-              key: "AIzaSyDZLHUxrwOue8mkvqEil_bZmNG99KkXpaQ",
-              language: "es",
-              components: "country:co",
-            }}
-          />
-        </View>
-        <View style={styles.inputGroup}>
-          <TextInput
-            placeholder="Cupos disponibles"
-            onChangeText={(value) =>
-              handleChangeText("available_tickets", value)
-            }
-          />
-        </View>
-        <View style={styles.inputGroup}>
-          <TextInput
-            placeholder="Hora de salida"
-            onChangeText={(value) => handleChangeText("outTime", value)}
-          />
-        </View>
-        <View>
-          <Button title="Guardar viaje" onPress={() => addTravel()}></Button>
-        </View>
+      </MapView>
+      <View style={styles.inputView}>
+        <GooglePlacesInput destinyFunc={insertNewDestinyAdress} />
       </View>
-    </ScrollView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  view: {
     flex: 1,
-    padding: 35,
-    backgroundColor: "#ffffff",
-  },
-  inputGroup: {
-    flex: 1,
-    padding: 0,
-    marginBottom: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#cccccc",
-  },
-  logoTop: {
-    flex: 1,
-    padding: 5,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#198fd5",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
   },
   map: {
-    width: 300,
-    height: 450,
+    flex: 1,
+    position: "relative",
+  },
+  inputView: {
+    position: "absolute",
+    top: 40,
+    width: "90%",
+    flex: 1,
+    alignSelf: "center",
   },
 });
 
