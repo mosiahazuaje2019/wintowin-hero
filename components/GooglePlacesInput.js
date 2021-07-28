@@ -1,25 +1,25 @@
-import React, { useRef } from "react";
-import { TouchableOpacity, StyleSheet, Text } from "react-native";
+import React from "react";
+import { Input } from "react-native-elements";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const GooglePlacesInput = (props) => {
-  const ref = useRef();
   return (
     <GooglePlacesAutocomplete
-      ref={ref}
-      placeholder="Buscar lugar de destino"
+      placeholder={props.placeholder}
       currentLocation={true}
       currentLocationLabel="Lugares cercanos"
       minLength={3}
-      renderRightButton={() => {
-        return (
-          <TouchableOpacity
-          style={styles.button}
-          onPress={() => ref.current?.clear()}
-        >
-          <Text>X</Text>
-        </TouchableOpacity>
-        )
+      styles={{
+        separator: {
+          height: 0.7,
+          backgroundColor: "black",
+        },
+        row: {
+          backgroundColor: "#FFFFFF",
+          padding: 10,
+          height: 40,
+          flexDirection: "row",
+        },
       }}
       debounce={300}
       fetchDetails={true}
@@ -34,17 +34,12 @@ const GooglePlacesInput = (props) => {
         language: "es",
         components: "country:co",
       }}
+      textInputProps={{
+        InputComp: Input,
+        leftIcon: { type: "font-awesome", name: "compass" },
+      }}
     />
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: "center",
-    backgroundColor: "#0096FF",
-    padding: 10,
-    height: 45
-  }
-});
 
 export default GooglePlacesInput;

@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, TextInput } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Text, Input, Icon } from "react-native-elements";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import MapViewDirections from "react-native-maps-directions";
 import GooglePlacesInput from "../../components/GooglePlacesInput";
-import HeaderComponent from "../../components/HeaderComponent";
+import BottomSheet from "reanimated-bottom-sheet";
 
 const CreateTravelScreen = ({ navigation, route }) => {
   const [location, setLocation] = useState({
@@ -17,6 +18,7 @@ const CreateTravelScreen = ({ navigation, route }) => {
   const [destinyLocation, setDestinyLocation] = useState(null);
   const [_currentAdress, setCurrentAdress] = useState(null);
   const ref = useRef();
+  const refSheet = useRef();
 
   function regionFrom(lat, lon, rotation = 0) {
     return {
@@ -77,21 +79,16 @@ const CreateTravelScreen = ({ navigation, route }) => {
 
   return (
     <>
-      <HeaderComponent navigation={navigation} text={route.params?.title} />
       <MapView
         style={styles.map}
         ref={ref}
         initialRegion={location}
         showsScale
-        showsCompass
         showsPointsOfInterest
         showsBuildings
-        showsMyLocationButton
         showsUserLocation
         followsUserLocation
         loadingEnabled
-        zoomEnabled
-        zoomControlEnabled
         showsTraffic={false}
       >
         <Marker
@@ -109,7 +106,7 @@ const CreateTravelScreen = ({ navigation, route }) => {
             draggable
             pinColor="#0096FF"
             onDragEnd={(e) => insertNewDestinyAdress(e.nativeEvent.coordinate)}
-            coordinate={location}
+            coordinate={destinyLocation}
             title="Punto de destino"
           />
         )}
@@ -129,9 +126,44 @@ const CreateTravelScreen = ({ navigation, route }) => {
           />
         )}
       </MapView>
-      <View style={styles.inputView}>
-        <GooglePlacesInput destinyFunc={insertNewDestinyAdress} />
-      </View>
+
+      <BottomSheet
+        ref={refSheet}
+        initialSnap={2}
+        snapPoints={[450, 300, 70]}
+        borderRadius={40}
+        enabledGestureInteraction={true}
+        enabledContentTapInteraction={false}
+        renderContent={() => {
+          return (
+            <View
+              style={{
+                backgroundColor: "white",
+                padding: 16,
+                height: 450,
+              }}
+            >
+              <Text h3 onPress={() => refSheet.current?.snapTo(450)}>
+                Crear viaje
+              </Text>
+              <View style={{ flex: 1, flexDirection: "row" }}>
+                <View style={{ width: "50%" }}>
+                  <GooglePlacesInput
+                    destinyFunc={insertNewOriginAdress}
+                    placeholder="Lugar de Origen"
+                  />
+                </View>
+                <View style={{ width: "50%" }}>
+                  <GooglePlacesInput
+                    destinyFunc={insertNewDestinyAdress}
+                    placeholder="Lugar de destino"
+                  />
+                </View>
+              </View>
+            </View>
+          );
+        }}
+      />
     </>
   );
 };
@@ -142,14 +174,6 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
-  },
-  inputView: {
-    position: "absolute",
-    top: 90,
-    width: "70%",
-    textAlign: "center",
-    flex: 1,
-    alignSelf: "center",
   },
 });
 
