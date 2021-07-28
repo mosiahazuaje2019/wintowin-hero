@@ -5,8 +5,9 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { ScrollView } from "react-native-gesture-handler";
 import MapViewDirections from "react-native-maps-directions";
+import HeaderComponent from "../../components/HeaderComponent";
 
-const ListTravelScreen = ({ route }) => {
+const ListTravelScreen = ({ route, navigation }) => {
   const { id } = route.params;
   const [travel, setTravel] = useState({});
   const [adresses, setAdresses] = useState({});
@@ -16,25 +17,15 @@ const ListTravelScreen = ({ route }) => {
     const travelRef = firebase.db.collection("travels").doc(id);
     travelRef.get().then((doc) => {
       setTravel(doc.data());
-      setTimeout(() => {
-        ref.current?.fitToSuppliedMarkers(["origin", "destiny"]);
-      }, 1000);
+      ref.current?.fitToSuppliedMarkers(["origin", "destiny"]);
     });
   }, [id]);
 
   return (
     <>
       <ScrollView>
-        <View style={styles.container}>
-          <Image
-            source={{ uri: "http://159.203.82.152/assets/img/logo-white.png" }}
-            style={{ width: 200, height: 80, marginTop: 20 }}
-          />
-        </View>
+        <HeaderComponent navigation={navigation} text={route.params?.title} />
         <View>
-          <View>
-            <Text style={styles.title}>Viaje</Text>
-          </View>
           {travel.start_point && travel.ended_point && (
             <MapView
               ref={ref}
