@@ -7,7 +7,7 @@ const GooglePlacesInput = (props) => {
   return (
     <GooglePlacesAutocomplete
       ref={ref}
-      placeholder="Buscar lugar de origen"
+      placeholder="Buscar lugar de destino"
       currentLocation={true}
       currentLocationLabel="Lugares cercanos"
       minLength={3}

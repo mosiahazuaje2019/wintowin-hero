@@ -16,6 +16,7 @@ import DetailCalification from "./screens/Calification/DetailCalification";
 import Membresy from "./screens/Membresy/Membresy";
 import Contact from "./screens/Contact/Contact";
 import Groups from "./screens/Groups/Group";
+import HeaderComponent from "./components/HeaderComponent";
 
 import {
   DrawerItemList,
@@ -66,57 +67,62 @@ function MyStack() {
           }}
         >
           <Drawer.Screen
-            name="ListUsers"
-            component={ListUsers}
-            options={{ title: "Mis viajes" }}
+            name="CreateTravelScreen"
+            component={CreateTravelScreen}
+            initialParams={{ title: "Crear viaje" }}
+            options={{ title: "Crear viaje" }}
           />
           <Drawer.Screen
             name="DetailUserScreen"
             component={DetailUserScreen}
+            initialParams={{ title: "Mi perfil" }}
             options={{ title: "Mi perfil" }}
           />
           <Drawer.Screen
             name="Groups"
             component={Groups}
+            initialParams={{ title: "Mi grupo" }}
             options={{ title: "Mi Grupo" }}
           />
           <Drawer.Screen
-            name="CreateTravelScreen"
-            component={CreateTravelScreen}
-            options={{ title: "Crear viaje" }}
-          />
-          <Drawer.Screen
             name="DetailTravelScreen"
+            initialParams={{ title: "Detalle" }}
             component={DetailTravelScreen}
           />
           <Drawer.Screen
             name="ListTravelScreen"
             component={ListTravelScreen}
+            initialParams={{ title: "Mis viajes" }}
             options={{ title: "Mis viajes" }}
           />
           <Drawer.Screen
             name="ListVehicles"
             component={ListVehicles}
+            initialParams={{ title: "Mis vehiculos" }}
             options={{ title: "Mis Vehiculos" }}
           />
           <Drawer.Screen
             name="ListWallet"
             component={ListWallet}
+            initialParams={{ title: "Wallet" }}
             options={{ title: "Wallet" }}
           />
           <Drawer.Screen
             name="DetailCalification"
             component={DetailCalification}
+            initialParams={{ title: "Calificación" }}
             options={{ title: "Calificación" }}
           />
           <Drawer.Screen
             name="Membresy"
             component={Membresy}
+            initialParams={{ title: "Pago de membresia" }}
             options={{ title: "Pago de membresia" }}
           />
           <Drawer.Screen
             name="Contact"
             component={Contact}
+            initialParams={{ title: "Contacto" }}
             options={{ title: "Contacto" }}
           />
         </Drawer.Navigator>

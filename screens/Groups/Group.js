@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Text, Image, View, ScrollView, StyleSheet } from "react-native";
 import { ListItem, Avatar } from "react-native-elements";
 import firebase from "../../database/firebase";
+import HeaderComponent from '../../components/HeaderComponent';
 
 const Group = (props) => {
     const [users, setUsers] = useState([])
@@ -26,11 +27,7 @@ const Group = (props) => {
 
     return (
         <ScrollView>
-            <View style={styles.container} >
-                <Image source={{ uri: "http://159.203.82.152/assets/img/logo-white.png" }} style={{ width: 200, height: 80 }} />
-            </View>
-
-            <Text style={styles.title}>Mi Grupo</Text>
+            <HeaderComponent navigation={props.navigation} text={props.route.params?.title} />
             {
                 users.map(user => {
                     return (

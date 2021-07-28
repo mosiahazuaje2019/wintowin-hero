@@ -4,13 +4,14 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import MapViewDirections from "react-native-maps-directions";
 import GooglePlacesInput from "../../components/GooglePlacesInput";
+import HeaderComponent from "../../components/HeaderComponent";
 
-const CreateTravelScreen = ({ navigation }) => {
+const CreateTravelScreen = ({ navigation, route }) => {
   const [location, setLocation] = useState({
     latitude: 4.61059,
     longitude: -74.11491,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
+    latitudeDelta: 1,
+    longitudeDelta: 1,
   });
 
   const [destinyLocation, setDestinyLocation] = useState(null);
@@ -28,14 +29,19 @@ const CreateTravelScreen = ({ navigation }) => {
   }
 
   async function findUserLocation() {
-    const userLocation = await Location.getCurrentPositionAsync({
-      accuracy: Location.Accuracy.BestForNavigation,
-    });
-
-    const latitude = userLocation.coords.latitude;
-    const longitude = userLocation.coords.longitude;
-    const rotation = userLocation.coords.heading;
-    return setLocation(regionFrom(latitude, longitude, rotation));
+    return await Location.watchPositionAsync(
+      {
+        accuracy: Location.Accuracy.High,
+        timeInterval: 1000,
+        distanceInterval: 50,
+      },
+      (userLocation) => {
+        const latitude = userLocation.coords.latitude;
+        const longitude = userLocation.coords.longitude;
+        const rotation = userLocation.coords.heading;
+        setLocation(regionFrom(latitude, longitude, rotation));
+      }
+    );
   }
 
   async function insertNewOriginAdress({ latitude, longitude }) {
@@ -69,23 +75,32 @@ const CreateTravelScreen = ({ navigation }) => {
     })();
   }, []);
 
-  const interval = async () => {
-    await findUserLocation();
-  }
-
-  setTimeout(interval, 2000)
-
   return (
     <>
-      <MapView style={styles.map} ref={ref} initialRegion={location}>
+      <HeaderComponent navigation={navigation} text={route.params?.title} />
+      <MapView
+        style={styles.map}
+        ref={ref}
+        initialRegion={location}
+        showsScale
+        showsCompass
+        showsPointsOfInterest
+        showsBuildings
+        showsMyLocationButton
+        showsUserLocation
+        followsUserLocation
+        loadingEnabled
+        zoomEnabled
+        zoomControlEnabled
+        showsTraffic={false}
+      >
         <Marker
           identifier="origin"
           draggable
           pinColor="#0096FF"
-          rotation={location.rotation}
           onDragEnd={(e) => insertNewOriginAdress(e.nativeEvent.coordinate)}
           coordinate={location}
-          title="Ubicación actual"
+          title="Punto de origen"
         />
 
         {destinyLocation && (
@@ -95,7 +110,7 @@ const CreateTravelScreen = ({ navigation }) => {
             pinColor="#0096FF"
             onDragEnd={(e) => insertNewDestinyAdress(e.nativeEvent.coordinate)}
             coordinate={location}
-            title="Ubicación de destino"
+            title="Punto de destino"
           />
         )}
         {location && destinyLocation && (
@@ -127,12 +142,12 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
-    position: "relative",
   },
   inputView: {
     position: "absolute",
-    top: 40,
-    width: "90%",
+    top: 90,
+    width: "70%",
+    textAlign: "center",
     flex: 1,
     alignSelf: "center",
   },

@@ -20,6 +20,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {Header, Icon} from "react-native-elements";
+import HeaderComponent from "../../components/HeaderComponent";
 
 const initialState = {
   id: "",
@@ -171,12 +172,7 @@ const DetailUserScreen = (props) => {
 
   return (
       <ScrollView>
-        <Header
-            placement="left"
-            leftComponent={<Icon name='menu' onPress={() => props.navigation.toggleDrawer() }/>}
-            centerComponent={{ text: 'MI PERFIL', style: { color: '#fff' } }}
-            rightComponent={<Image source={{ uri: "http://159.203.82.152/assets/img/logo-white.png" }} style={{ width: 100, height: 40 }} />}
-        />
+        <HeaderComponent navigation={props.navigation} text={props.route.params?.title} />
         <View style={styles.inputGroup}>
           <TextInput
             value={user.name}
