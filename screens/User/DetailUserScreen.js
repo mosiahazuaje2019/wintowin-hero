@@ -199,7 +199,7 @@ const DetailUserScreen = (props) => {
           />
         </View>
         <View>
-          <Text>Seleccione tipo de documento</Text>
+          <Text style={styles.titleText}>Seleccione tipo de documento</Text>
           <Picker
             selectedValue={user.type_document}
             onValueChange={(itemValue, itemIndex) =>
@@ -220,38 +220,38 @@ const DetailUserScreen = (props) => {
           />
         </View>
         <View style={styles.separatorInput}>
-          <Text>Cargue de documento de identidad</Text>
+          <Text style={styles.titleText}>Cargue de documento de identidad</Text>
         </View>
         <View style={styles.fixToText}>
           <TouchableOpacity
             onPress={() => openImagePickerAsync("ref_cedula")}
-            style={styles.button}
+            style={styles.button_first}
           >
             <AntDesign name="clouduploado" style={styles.buttonIcons} />
             <Text style={styles.buttonText}>Cara frontal</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => openImagePickerAsync("ref_cedula")}
-            style={styles.button}
+            style={styles.button_second}
           >
             <AntDesign name="clouduploado" style={styles.buttonIcons} />
             <Text style={styles.buttonText}>Cara posterior</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.separatorInput}>
-          <Text>Cargue de licencia</Text>
+          <Text style={styles.titleText}>Cargue de licencia</Text>
         </View>
         <View style={styles.fixToText}>
           <TouchableOpacity
             onPress={() => openImagePickerAsync("ref_licencia")}
-            style={styles.button}
+            style={styles.button_first}
           >
             <AntDesign name="clouduploado" style={styles.buttonIcons} />
             <Text style={styles.buttonText}>Cara frontal</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => openImagePickerAsync("ref_licencia")}
-            style={styles.button}
+            style={styles.button_second}
           >
             <AntDesign name="clouduploado" style={styles.buttonIcons} />
             <Text style={styles.buttonText}>Cara posterior</Text>
@@ -262,17 +262,12 @@ const DetailUserScreen = (props) => {
             onPress={() => setShowCalendar(!showCalendar)}
             style={styles.buttonCalendar}
           >
-            <Text color="black">
-              <MaterialCommunityIcons
-                name="calendar-text"
-                style={styles.buttonIcons}
-              />
+          <MaterialCommunityIcons name="calendar-text" style={styles.buttonIcons} />
+            <Text style={styles.buttonText}>
               Indique fecha de vencimiento de su licencia
             </Text>
           </TouchableOpacity>
-          <TextInput
-            placeholder={moment(user.dateend_license).format("DD-MM-YYYY")}
-          ></TextInput>
+          <TextInput placeholder={moment(user.dateend_license).format("DD-MM-YYYY")} style={styles.titleDate}></TextInput>
         </View>
         {showCalendar && (
           <DateTimePicker
@@ -287,12 +282,12 @@ const DetailUserScreen = (props) => {
             }
           />
         )}
-        <View style={styles.fixToText}>
+        <View style={styles.fixToButton}>
           <TouchableOpacity
             onPress={() => updateUser()}
             style={styles.buttonUpdate}
           >
-            <Text style={styles.buttonText}>
+            <Text style={styles.buttonTextUpdate}>
               <AntDesign name="save" style={styles.buttonIconsUpdate} />
               Actualizar
             </Text>
@@ -301,8 +296,8 @@ const DetailUserScreen = (props) => {
             onPress={() => confirmationDelete()}
             style={styles.buttonDelete}
           >
-            <Text style={styles.buttonText}>
-              <AntDesign name="delete" size={24} color="white" />
+            <Text style={styles.buttonTextUpdate}>
+              <AntDesign name="delete" style={styles.buttonIconsUpdate} />
               Eliminar
             </Text>
           </TouchableOpacity>
@@ -341,31 +336,75 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
-  button: {
-    backgroundColor: "gray",
-    padding: 10,
-    borderRadius: 15,
-    width: 120,
+  titleText: {
+    fontSize:16,
+    fontWeight:"bold",
+    marginHorizontal:5,
+  },
+  titleDate: {
+    color: "black",
+    fontWeight:"bold",
+    textAlign:"center",
+  },
+  button_first: {
+    color: "#333333",
+    backgroundColor: "#e41159",
+    width: 100,
+    height: 100,
+    flex: 1,
+    marginRight: 5
+  },
+  button_second: {
+    color: "#333333",
+    backgroundColor: "#239a2f",
+    width: 100,
+    height: 100,
+    flex: 1,
+    marginLeft: 5
+  },
+  buttonCalendar: {
+    backgroundColor: "#239a2f",
+    marginRight: 5,
+    marginLeft:5
   },
   buttonText: {
     fontSize: 16,
     color: "#fff",
     textAlign: "center",
   },
+  buttonTextUpdate: {
+    fontSize: 16,
+    color: "#fff",
+    textAlign: "center",
+    marginTop: 40
+  },
   buttonIcons: {
-    color: "black",
+    color: "white",
     fontSize: 40,
     textAlign: "center",
+    marginTop: 10
+  },
+  buttonIconsUpdate: {
+    color: "white",
+    fontSize: 24,
+    textAlign: "center",
+    marginHorizontal: 10,
   },
   buttonUpdate: {
     backgroundColor: "#2daae1",
-    padding: 20,
-    borderRadius: 15,
+    borderTopRightRadius:20,
+    borderBottomLeftRadius:20,
+    flex: 1,
+    marginRight: 5,
+    height:100
   },
   buttonDelete: {
     backgroundColor: "#e65457",
-    padding: 20,
-    borderRadius: 15,
+    borderTopLeftRadius: 20,
+    borderBottomRightRadius:20,
+    flex: 1,
+    marginLeft: 5,
+    height:100
   },
   thumbnail: {
     width: 300,
@@ -383,13 +422,16 @@ const styles = StyleSheet.create({
   fixToText: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom:20
+    marginBottom:20,
+    marginRight: 5,
+    marginLeft: 5
   },
-  buttonIconsUpdate: {
-    color: "white",
-    fontSize: 24,
-    marginRight: 50,
-    paddingRight: 50,
+  fixToButton: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom:20,
+    marginRight: 0,
+    marginLeft: 0,
   },
 });
 
