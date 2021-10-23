@@ -34,7 +34,7 @@ function MyStack() {
     });
   }, []);
 
-  if (!user)
+  if (user)
     return (
       <>
         <Drawer.Navigator
